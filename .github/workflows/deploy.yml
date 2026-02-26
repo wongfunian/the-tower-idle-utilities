@@ -14,17 +14,17 @@ jobs:
         steps:
             - uses: actions/checkout@v4
 
-            - name: Setup Node
-              uses: actions/setup-node@v4
-              with:
-                  node-version: 20
-                  cache: 'pnpm'
-
             # ✅ THIS IS THE IMPORTANT PART
             - name: Enable Corepack (installs pnpm automatically)
               run: |
                   corepack enable
                   corepack prepare pnpm@9 --activate
+
+            - name: Setup Node
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+                  cache: 'pnpm'
 
             - name: Install dependencies
               run: pnpm install --frozen-lockfile
