@@ -6,16 +6,13 @@ on:
 
 permissions:
     contents: write
-    pages: write
-    id-token: write
 
 jobs:
     build-and-deploy:
         runs-on: ubuntu-latest
 
         steps:
-            - name: Checkout
-              uses: actions/checkout@v4
+            - uses: actions/checkout@v4
 
             - name: Setup Node
               uses: actions/setup-node@v4
@@ -23,10 +20,11 @@ jobs:
                   node-version: 20
                   cache: 'pnpm'
 
-            - name: Setup pnpm
-              uses: pnpm/action-setup@v4
-              with:
-                  version: 9
+            # ✅ THIS IS THE IMPORTANT PART
+            - name: Enable Corepack (installs pnpm automatically)
+              run: |
+                  corepack enable
+                  corepack prepare pnpm@9 --activate
 
             - name: Install dependencies
               run: pnpm install --frozen-lockfile
@@ -34,7 +32,7 @@ jobs:
             - name: Build
               run: pnpm build
 
-            - name: Deploy to Pages
+            - name: Deploy
               uses: peaceiris/actions-gh-pages@v4
               with:
                   github_token: ${{ secrets.GITHUB_TOKEN }}
