@@ -20,8 +20,7 @@ body {
 	color: var(--text-main);
 	font-family: 'Space Mono', ui-monospace, monospace;
 	background:
-		radial-gradient(1000px 600px at 10% 0%, #1d3d68 0%, transparent 65%),
-		radial-gradient(900px 520px at 90% 100%, #3f224e 0%, transparent 65%),
+		radial-gradient(1000px 600px at 10% 0%, #1d3d68 0%, transparent 65%), radial-gradient(900px 520px at 90% 100%, #3f224e 0%, transparent 65%),
 		linear-gradient(145deg, var(--bg-night) 0%, #020712 100%);
 }
 
@@ -176,6 +175,80 @@ input[type='range']::-moz-range-thumb {
 	box-shadow: 0 8px 18px rgba(0, 194, 255, 0.35);
 }
 
+.toggle-row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+}
+
+.toggle-copy {
+	display: flex;
+	flex-direction: column;
+	gap: 0.3rem;
+}
+
+.toggle-label {
+	font-size: 0.8rem;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: #c0d6f7;
+}
+
+.switch {
+	position: relative;
+	display: inline-flex;
+	cursor: pointer;
+}
+
+.switch input {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	opacity: 0;
+	pointer-events: none;
+}
+
+.switch-track {
+	width: 52px;
+	height: 30px;
+	padding: 3px;
+	border: 1px solid rgba(152, 186, 227, 0.5);
+	border-radius: 999px;
+	background: rgba(9, 22, 43, 0.9);
+	transition:
+		background 180ms ease,
+		border-color 180ms ease,
+		box-shadow 180ms ease;
+}
+
+.switch-thumb {
+	display: block;
+	width: 22px;
+	height: 22px;
+	border-radius: 50%;
+	background: #d9e9ff;
+	transition:
+		transform 180ms ease,
+		background 180ms ease;
+}
+
+.switch input:checked + .switch-track {
+	border-color: transparent;
+	background: linear-gradient(135deg, #00c2ff, #00f5d4);
+	box-shadow: 0 8px 18px rgba(0, 194, 255, 0.35);
+}
+
+.switch input:checked + .switch-track .switch-thumb {
+	transform: translateX(22px);
+	background: #03222f;
+}
+
+.switch input:focus-visible + .switch-track {
+	outline: 2px solid #86dcff;
+	outline-offset: 2px;
+}
+
 .stats {
 	margin-top: auto;
 	padding: 0.95rem;
@@ -249,6 +322,17 @@ input[type='range']::-moz-range-thumb {
 	aspect-ratio: 1 / 1;
 }
 
+.beam-rotation {
+	transform-box: fill-box;
+	transform-origin: center;
+	animation: spotlight-spin 60s linear infinite;
+	animation-play-state: running;
+}
+
+.beam-rotation.is-paused {
+	animation-play-state: paused;
+}
+
 .arena-glow {
 	fill: rgba(8, 27, 46, 0.55);
 }
@@ -277,6 +361,16 @@ input[type='range']::-moz-range-thumb {
 	fill: #04101f;
 	stroke: #90bfff;
 	stroke-width: 2;
+}
+
+@keyframes spotlight-spin {
+	from {
+		transform: rotate(0deg);
+	}
+
+	to {
+		transform: rotate(360deg);
+	}
 }
 
 @media (max-width: 960px) {

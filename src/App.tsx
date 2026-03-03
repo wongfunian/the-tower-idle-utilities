@@ -33,6 +33,7 @@ const createBeamPath = (radius: number, startAngle: number, endAngle: number) =>
 export default function App() {
 	const [degree, setDegree] = useState(45);
 	const [spotlightCount, setSpotlightCount] = useState(2);
+	const [isSpinning, setIsSpinning] = useState(true);
 
 	const beams = useMemo(() => {
 		const spacing = 360 / spotlightCount;
@@ -106,6 +107,26 @@ export default function App() {
 					<p className="hint">Maximum supported: {MAX_SPOTLIGHTS} spotlights</p>
 				</div>
 
+				<div className="control">
+					<div className="toggle-row">
+						<div className="toggle-copy">
+							<span className="toggle-label">Spin Animation</span>
+							<p className="hint">Keep spotlights rotating continuously</p>
+						</div>
+						<label className="switch">
+							<input
+								type="checkbox"
+								checked={isSpinning}
+								onChange={(event) => setIsSpinning(event.target.checked)}
+								aria-label="Toggle spotlight spinning animation"
+							/>
+							<span className="switch-track">
+								<span className="switch-thumb" />
+							</span>
+						</label>
+					</div>
+				</div>
+
 				<div className="stats">
 					<div className="stat-row">
 						<span>Current Coverage</span>
@@ -154,16 +175,18 @@ export default function App() {
 					<circle r={ARENA_RADIUS + 22} className="arena-rim" />
 					<circle r={ARENA_RADIUS} className="arena-core" />
 
-					{beams.map((beam) => (
-						<path
-							key={beam.id}
-							d={beam.path}
-							fill={`url(#beam-gradient-${beam.id})`}
-							stroke={beam.color}
-							strokeOpacity="0.55"
-							strokeWidth="1.2"
-						/>
-					))}
+					<g className={`beam-rotation${isSpinning ? '' : ' is-paused'}`}>
+						{beams.map((beam) => (
+							<path
+								key={beam.id}
+								d={beam.path}
+								fill={`url(#beam-gradient-${beam.id})`}
+								stroke={beam.color}
+								strokeOpacity="0.55"
+								strokeWidth="1.2"
+							/>
+						))}
+					</g>
 
 					<circle r="36" className="tower-core" />
 					<circle r="16" className="tower-top" />
